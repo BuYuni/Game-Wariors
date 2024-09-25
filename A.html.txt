@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoMath Warriors</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0f7fa;
+      text-align: center;
+    }
+    #gameCanvas {
+      border: 2px solid #009688;
+      background-color: #fff;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>EcoMath Warriors</h1>
+  <p>Selamat datang, Eco Warrior! Selesaikan masalah lingkungan dengan bilangan kelipatan dan faktor!</p>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+  <!-- JavaScript untuk logika game -->
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set up game variables
+    let level = 1;
+    let targetNumber = generateRandomNumber();
+    let userInput = "";
+
+    // Function to generate random number based on level
+    function generateRandomNumber() {
+      return Math.floor(Math.random() * (level * 10)) + 1;
+    }
+
+    // Function to check if input is a multiple or factor of the target
+    function checkAnswer() {
+      const userNumber = parseInt(userInput);
+      if (level % 2 === 0 && targetNumber % userNumber === 0) {
+        alert("Benar! Ini adalah faktor.");
+      } else if (level % 2 !== 0 && userNumber % targetNumber === 0) {
+        alert("Benar! Ini adalah kelipatan.");
+      } else {
+        alert("Salah! Coba lagi.");
+      }
+      nextLevel();
+    }
+
+    // Function to advance to next level
+    function nextLevel() {
+      level++;
+      targetNumber = generateRandomNumber();
+      userInput = "";
+      drawGame();
+    }
+
+    // Function to draw game state
+    function drawGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "#009688";
+      ctx.fillText("Level: " + level, 10, 30);
+      ctx.fillText("Angka Target: " + targetNumber, 10, 60);
+      ctx.fillText("Masukkan kelipatan atau faktor:", 10, 90);
+    }
+
+    // Initial drawing of the game
+    drawGame();
+
+    // Handle user input
+    window.addEventListener('keydown', (e) => {
+      if (e.key >= 0 && e.key <= 9) {
+        userInput += e.key;
+        drawGame();
+      } else if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+  </script>
+</body>
+</html>
